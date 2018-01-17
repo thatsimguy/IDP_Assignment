@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class BulletMovement : MonoBehaviour {
 
-    [SerializeField]
     float movementSpeed = 10;
+
+    [SerializeField]
+    ParticleSystem explosion;
+
     // Use this for initialization
     void Start ()
     {
@@ -20,7 +23,15 @@ public class BulletMovement : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-      //  Debug.Log(other.gameObject.name);
+        //  Debug.Log(other.gameObject.name);
+        Health healthScript = other.GetComponent<Health>();
+
+        if (healthScript != null)
+        {
+            ParticleSystem thisExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
+            thisExplosion.Play();
+            healthScript.AddHealth(10);
+        }
     }
     void OnCollisionEnter(Collision collision)
     {
